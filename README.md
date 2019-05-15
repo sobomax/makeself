@@ -125,6 +125,17 @@ Here is also how I created the [makeself.run][9] archive which contains the Make
 
 `makeself.sh --notemp makeself makeself.run "Makeself by Stephane Peter" echo "Makeself has extracted itself" `
 
+The behaviour of the makeself can further be tweaked using environment variables.
+
+  * Currently supported environment variables are:
+
+    *  **`COMPRESS_CMD`**: Set particular command (or set of commands/pipe) to perform compression.
+    *  **`UNCOMPRESS_CMD`**: Set particular command (or set of commands/pipe) to perform decompression.
+
+For example the following command would instruct xz to use all cores available in the system to speed-up compression:
+
+`COMPRESS_CMD="xz -T0 -v" makeself.sh -xz bigdata bigdata.sh "Time is precious" echo "Makeself has extracted itself"`
+
 Archives generated with Makeself can be passed the following arguments:
 
   * **`--keep`** : Prevent the files to be extracted in a temporary directory that will be removed after the embedded script's execution. The files will then be extracted in the current working directory and will stay here until you remove them.
