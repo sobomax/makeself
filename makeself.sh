@@ -472,54 +472,54 @@ fi
 
 case $COMPRESS in
 gzip)
-    GZIP_CMD="gzip -c$COMPRESS_LEVEL"
-    GUNZIP_CMD="gzip -cd"
+    COMPRESS_CMD="gzip -c$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="gzip -cd"
     ;;
 pigz) 
-    GZIP_CMD="pigz -$COMPRESS_LEVEL"
-    GUNZIP_CMD="gzip -cd"
+    COMPRESS_CMD="pigz -$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="gzip -cd"
     ;;
 pbzip2)
-    GZIP_CMD="pbzip2 -c$COMPRESS_LEVEL"
-    GUNZIP_CMD="bzip2 -d"
+    COMPRESS_CMD="pbzip2 -c$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="bzip2 -d"
     ;;
 bzip2)
-    GZIP_CMD="bzip2 -$COMPRESS_LEVEL"
-    GUNZIP_CMD="bzip2 -d"
+    COMPRESS_CMD="bzip2 -$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="bzip2 -d"
     ;;
 xz)
-    GZIP_CMD="xz -c$COMPRESS_LEVEL"
-    GUNZIP_CMD="xz -d"
+    COMPRESS_CMD="xz -c$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="xz -d"
     ;;
 lzo)
-    GZIP_CMD="lzop -c$COMPRESS_LEVEL"
-    GUNZIP_CMD="lzop -d"
+    COMPRESS_CMD="lzop -c$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="lzop -d"
     ;;
 lz4)
-    GZIP_CMD="lz4 -c$COMPRESS_LEVEL"
-    GUNZIP_CMD="lz4 -d"
+    COMPRESS_CMD="lz4 -c$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="lz4 -d"
     ;;
 base64)
-    GZIP_CMD="base64"
-    GUNZIP_CMD="base64 --decode -i -"
+    COMPRESS_CMD="base64"
+    UNCOMPRESS_CMD="base64 --decode -i -"
     ;;
 gpg)
-    GZIP_CMD="gpg $GPG_EXTRA -ac -z$COMPRESS_LEVEL"
-    GUNZIP_CMD="gpg -d"
+    COMPRESS_CMD="gpg $GPG_EXTRA -ac -z$COMPRESS_LEVEL"
+    UNCOMPRESS_CMD="gpg -d"
     ENCRYPT="gpg"
     ;;
 gpg-asymmetric)
-    GZIP_CMD="gpg $GPG_EXTRA -z$COMPRESS_LEVEL -es"
-    GUNZIP_CMD="gpg --yes -d"
+    COMPRESS_CMD="gpg $GPG_EXTRA -z$COMPRESS_LEVEL -es"
+    UNCOMPRESS_CMD="gpg --yes -d"
     ENCRYPT="gpg"
     ;;
 Unix)
-    GZIP_CMD="compress -cf"
-    GUNZIP_CMD="exec 2>&-; uncompress -c || test \\\$? -eq 2 || gzip -cd"
+    COMPRESS_CMD="compress -cf"
+    UNCOMPRESS_CMD="exec 2>&-; uncompress -c || test \\\$? -eq 2 || gzip -cd"
     ;;
 none)
-    GZIP_CMD="cat"
-    GUNZIP_CMD="cat"
+    COMPRESS_CMD="cat"
+    UNCOMPRESS_CMD="cat"
     ;;
 esac
 
@@ -602,7 +602,7 @@ tmparch="${TMPDIR:-/tmp}/mkself$$.tar"
     exit 1
 }
 
-eval "$GZIP_CMD" <"$tmparch" >"$tmpfile" || {
+eval "$COMPRESS_CMD" <"$tmparch" >"$tmpfile" || {
     echo "ERROR: failed to create temporary file: $tmpfile"
     rm -f "$tmparch" "$tmpfile"
     exit 1
