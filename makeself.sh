@@ -472,56 +472,58 @@ fi
 
 case $COMPRESS in
 gzip)
-    COMPRESS_CMD="gzip -c$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="gzip -cd"
+    _COMPRESS_CMD="gzip -c$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="gzip -cd"
     ;;
 pigz) 
-    COMPRESS_CMD="pigz -$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="gzip -cd"
+    _COMPRESS_CMD="pigz -$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="gzip -cd"
     ;;
 pbzip2)
-    COMPRESS_CMD="pbzip2 -c$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="bzip2 -d"
+    _COMPRESS_CMD="pbzip2 -c$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="bzip2 -d"
     ;;
 bzip2)
-    COMPRESS_CMD="bzip2 -$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="bzip2 -d"
+    _COMPRESS_CMD="bzip2 -$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="bzip2 -d"
     ;;
 xz)
-    COMPRESS_CMD="xz -c$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="xz -d"
+    _COMPRESS_CMD="xz -c$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="xz -d"
     ;;
 lzo)
-    COMPRESS_CMD="lzop -c$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="lzop -d"
+    _COMPRESS_CMD="lzop -c$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="lzop -d"
     ;;
 lz4)
-    COMPRESS_CMD="lz4 -c$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="lz4 -d"
+    _COMPRESS_CMD="lz4 -c$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="lz4 -d"
     ;;
 base64)
-    COMPRESS_CMD="base64"
-    UNCOMPRESS_CMD="base64 --decode -i -"
+    _COMPRESS_CMD="base64"
+    _UNCOMPRESS_CMD="base64 --decode -i -"
     ;;
 gpg)
-    COMPRESS_CMD="gpg $GPG_EXTRA -ac -z$COMPRESS_LEVEL"
-    UNCOMPRESS_CMD="gpg -d"
+    _COMPRESS_CMD="gpg $GPG_EXTRA -ac -z$COMPRESS_LEVEL"
+    _UNCOMPRESS_CMD="gpg -d"
     ENCRYPT="gpg"
     ;;
 gpg-asymmetric)
-    COMPRESS_CMD="gpg $GPG_EXTRA -z$COMPRESS_LEVEL -es"
-    UNCOMPRESS_CMD="gpg --yes -d"
+    _COMPRESS_CMD="gpg $GPG_EXTRA -z$COMPRESS_LEVEL -es"
+    _UNCOMPRESS_CMD="gpg --yes -d"
     ENCRYPT="gpg"
     ;;
 Unix)
-    COMPRESS_CMD="compress -cf"
-    UNCOMPRESS_CMD="exec 2>&-; uncompress -c || test \\\$? -eq 2 || gzip -cd"
+    _COMPRESS_CMD="compress -cf"
+    _UNCOMPRESS_CMD="exec 2>&-; uncompress -c || test \\\$? -eq 2 || gzip -cd"
     ;;
 none)
-    COMPRESS_CMD="${COMPRESS_CMD:-cat}"
-    UNCOMPRESS_CMD="${UNCOMPRESS_CMD:-cat}"
+    _COMPRESS_CMD="cat"
+    _UNCOMPRESS_CMD="cat"
     ;;
 esac
+COMPRESS_CMD="${COMPRESS_CMD:-${_COMPRESS_CMD}}"
+UNCOMPRESS_CMD="${UNCOMPRESS_CMD:-${_UNCOMPRESS_CMD}}"
 
 if test x"$ENCRYPT" = x"openssl"; then
     if test x"$APPEND" = x"y"; then
