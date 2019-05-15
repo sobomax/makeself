@@ -518,8 +518,8 @@ Unix)
     UNCOMPRESS_CMD="exec 2>&-; uncompress -c || test \\\$? -eq 2 || gzip -cd"
     ;;
 none)
-    COMPRESS_CMD="cat"
-    UNCOMPRESS_CMD="cat"
+    COMPRESS_CMD="${COMPRESS_CMD:-cat}"
+    UNCOMPRESS_CMD="${UNCOMPRESS_CMD:-cat}"
     ;;
 esac
 
